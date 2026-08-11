@@ -10,7 +10,7 @@ export default function HomePage() {
           src="/images/All BeBell.png"
           alt="BeBell Bank"
           width={140}
-          height={40}
+          height={40} 
           priority
           className="h-9 w-auto object-contain"
         />
