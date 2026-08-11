@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "deposit_requests" ALTER COLUMN "status" SET DEFAULT 'AWAITING_PAYMENT',
+ALTER COLUMN "expiresAt" DROP DEFAULT;
