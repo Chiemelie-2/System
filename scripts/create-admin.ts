@@ -5,7 +5,7 @@ import { prisma } from '../lib/prisma'
 import bcrypt from 'bcryptjs'
 
 async function createAdmin() {
-  const email = 'admin@bankingsim.com'
+  const email = 'swiftgoldfidubciarybank@gmail.com'
   const password = process.env.ADMIN_SEED_PASSWORD
   if (!password) throw new Error('Set ADMIN_SEED_PASSWORD before running this script')
 
