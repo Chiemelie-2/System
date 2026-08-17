@@ -10,18 +10,32 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Fiduciary brand palette — deep navy + warm gold
         primary: {
-          50:  '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e3a5f',
-          900: '#1e3a8a',
-          950: '#172554',
+          50:  '#f0f4ff',
+          100: '#e0eaff',
+          200: '#c7d7fe',
+          300: '#a5bcfd',
+          400: '#8098fa',
+          500: '#6172f3',
+          600: '#4a51e8',
+          700: '#3d3fcf',
+          800: '#1a1f6e',   // deep navy — primary dark
+          900: '#13164f',   // darkest navy
+          950: '#0c0e36',
+        },
+        // Gold accent for premium feel
+        gold: {
+          50:  '#fffbeb',
+          100: '#fef3c7',
+          200: '#fde68a',
+          300: '#fcd34d',
+          400: '#fbbf24',
+          500: '#c9963a',   // warm antique gold
+          600: '#b8832e',
+          700: '#92651f',
+          800: '#6b4a17',
+          900: '#4a330f',
         },
         success: {
           50:  '#f0fdf4',
@@ -40,19 +54,25 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        sans:    ['Inter', 'system-ui', 'sans-serif'],
+        display: ['"Playfair Display"', 'Georgia', 'serif'],
+        mono:    ['JetBrains Mono', 'monospace'],
       },
-      // Safe area inset for iOS notch / home bar
-      // Consumed as: pb-safe, h-safe, mb-safe etc.
       spacing: {
         safe: 'env(safe-area-inset-bottom)',
       },
+      backgroundImage: {
+        'hero-overlay':
+          'linear-gradient(135deg, rgba(13,14,54,0.82) 0%, rgba(26,31,110,0.68) 50%, rgba(13,14,54,0.55) 100%)',
+        'gold-shimmer':
+          'linear-gradient(90deg, #c9963a 0%, #fbbf24 50%, #c9963a 100%)',
+      },
       animation: {
-        'fade-in':    'fadeIn 0.3s ease-in-out',
-        'slide-up':   'slideUp 0.3s ease-out',
-        'slide-down': 'slideDown 0.3s ease-out',
-        'scale-in':   'scaleIn 0.2s ease-out',
+        'fade-in':     'fadeIn 0.4s ease-in-out',
+        'slide-up':    'slideUp 0.5s ease-out',
+        'slide-down':  'slideDown 0.3s ease-out',
+        'scale-in':    'scaleIn 0.2s ease-out',
+        'shimmer':     'shimmer 2.5s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -60,8 +80,8 @@ const config: Config = {
           '100%': { opacity: '1' },
         },
         slideUp: {
-          '0%':   { transform: 'translateY(10px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)',     opacity: '1' },
+          '0%':   { transform: 'translateY(20px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)',    opacity: '1' },
         },
         slideDown: {
           '0%':   { transform: 'translateY(-10px)', opacity: '0' },
@@ -71,25 +91,24 @@ const config: Config = {
           '0%':   { transform: 'scale(0.95)', opacity: '0' },
           '100%': { transform: 'scale(1)',    opacity: '1' },
         },
+        shimmer: {
+          '0%':   { backgroundPosition: '-200% center' },
+          '100%': { backgroundPosition: '200% center' },
+        },
       },
     },
   },
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
-
-    // scrollbar-none — hides scrollbar on the category tab strip
-    // and any other horizontal scroll container
-    // Usage: className="overflow-x-auto scrollbar-none"
     function ({ addUtilities }: { addUtilities: Function }) {
       addUtilities({
         '.scrollbar-none': {
           '-ms-overflow-style': 'none',
           'scrollbar-width':    'none',
-          '&::-webkit-scrollbar': {
-            display: 'none',
-          },
+          '&::-webkit-scrollbar': { display: 'none' },
         },
+        '.text-balance': { 'text-wrap': 'balance' },
       })
     },
   ],
