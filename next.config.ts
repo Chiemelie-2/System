@@ -17,6 +17,10 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
+    // Declare every quality value used across the app.
+    // next/image throws a warning for any quality not listed here.
+    // Landing page hero uses quality={90}; all other images default to 75.
+    qualities: [75, 90],
   },
 
   compiler: {

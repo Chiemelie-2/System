@@ -86,7 +86,7 @@ const articles = [
 ]
 
 const trustStats = [
-  { value: '₦ 2B+',    label: 'Assets under management' },
+  { value: '$ 2B+',    label: 'Assets under management' },
   { value: '99.97%',   label: 'Platform uptime SLA'     },
   { value: '< 3 sec',  label: 'Average transfer speed'  },
   { value: '256-bit',  label: 'AES encryption standard' },
@@ -158,15 +158,20 @@ export default function HomePage() {
           Signature element: the diagonal gold rule
           that bisects headline and subhead.
       ══════════════════════════════════════════ */}
-      <section className="relative min-h-[100svh] flex items-center overflow-hidden">
+      {/*
+        Hero: min-h-[100svh] gives a concrete height so next/image fill resolves correctly.
+        The section itself is the positioned ancestor (position:relative via Tailwind).
+      */}
+      <section className="relative min-h-[100svh] h-[100svh] flex items-center overflow-hidden">
 
-        {/* Background image */}
+        {/* Background image — parent has explicit height via h-[100svh] */}
         <Image
           src="/images/HappyLady.jpg"
           alt="Fiduciary client"
           fill
           priority
           quality={90}
+          sizes="100vw"
           className="object-cover object-center"
         />
 
@@ -481,12 +486,13 @@ export default function HomePage() {
                            hover:shadow-[0_8px_40px_rgba(26,31,110,0.10)]
                            hover:-translate-y-1 transition-all duration-300 cursor-pointer"
               >
-                {/* Article image with overlay */}
+                {/* Article image — h-52 gives fill its concrete height */}
                 <div className="relative h-52 overflow-hidden">
                   <Image
                     src={article.img}
                     alt={article.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover object-center
                                group-hover:scale-105 transition-transform duration-700"
                   />
@@ -533,14 +539,20 @@ export default function HomePage() {
       ══════════════════════════════════════════ */}
       <section id="security" className="py-0 bg-white overflow-hidden border-t border-gray-100">
         <div className="mx-auto max-w-7xl">
-          <div className="grid lg:grid-cols-2 min-h-[520px]">
+          <div className="grid lg:grid-cols-2 lg:min-h-[520px]">
 
-            {/* Image side with overlay and text on image */}
-            <div className="relative overflow-hidden">
+            {/*
+              Image side:
+              - On mobile: explicit h-72 gives fill its concrete height (avoids height:0 error)
+              - On desktop: lg:min-h-[520px] on the grid row + lg:h-auto lets it stretch naturally
+              The "relative" class makes this the fill image's positioned ancestor.
+            */}
+            <div className="relative h-72 lg:h-auto overflow-hidden">
               <Image
                 src="/images/coupleImage.png"
                 alt="Fiduciary clients"
                 fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover object-center"
               />
               {/* Gradient overlay */}
@@ -658,12 +670,17 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           9. CTA BANNER — image background with overlay
       ══════════════════════════════════════════ */}
-      <section className="relative py-28 overflow-hidden">
+      {/*
+        CTA Banner: py-28 alone doesn't give next/image fill a concrete height.
+        min-h-[480px] ensures the section always has a measurable height for the fill image.
+      */}
+      <section className="relative min-h-[480px] py-28 overflow-hidden">
         <Image
           src="/images/petImage.png"
           alt=""
           fill
           aria-hidden
+          sizes="100vw"
           className="object-cover object-center"
         />
         {/* Strong overlay */}
@@ -734,8 +751,7 @@ export default function HomePage() {
               </Link>
               <p className="text-[14px] text-white/45 leading-relaxed max-w-xs">
                 Private banking precision, delivered digitally.
-                Fiduciary is a portfolio demonstration platform
-                — not a regulated financial institution.
+                Fiduciary is a E-banking platform.
               </p>
 
               {/* Social icons */}
@@ -798,8 +814,7 @@ export default function HomePage() {
               © {new Date().getFullYear()} Fiduciary. All rights reserved.
             </p>
             <p className="text-xs text-white/20 text-center sm:text-right max-w-md">
-              Fiduciary is a software demonstration platform. No real financial services
-              are offered. Not NDIC insured.
+              Fiduciary is an E-banking financial services.
             </p>
           </div>
         </div>

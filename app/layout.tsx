@@ -27,7 +27,7 @@ export default async function RootLayout({
   const session = await auth()
 
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       {/*
         Load Inter + Playfair Display from Google Fonts.
         Place the <link> tags in <head> for SSR performance.

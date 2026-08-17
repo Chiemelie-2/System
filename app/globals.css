@@ -36,10 +36,9 @@
     @apply bg-gray-50 text-gray-900 antialiased;
   }
 
-  /* Smooth scroll */
-  html {
-    scroll-behavior: smooth;
-  }
+  /* Smooth scroll — applied via data-scroll-behavior on <html> in layout.tsx
+     so Next.js route transitions are not affected.
+     See: https://nextjs.org/docs/messages/missing-data-scroll-behavior */
 }
 
 @layer components {
