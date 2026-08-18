@@ -43,12 +43,12 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="w-full max-w-md mx-auto px-4 py-8">
+    <div className="w-full max-w-md mx-auto px-1 py-8">
       <Card>
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-900">Create your account</h1>
           <p className="text-sm text-gray-500 mt-1">
-            Your account will be reviewed by an administrator before it is verified.
+            Your account will be reviewed before it is verified.
           </p>
         </div>
 
