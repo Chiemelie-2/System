@@ -43,7 +43,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="w-full max-w-md mx-auto px-1 py-8">
+    <div className="w-full max-w-md mx-auto  py-6">
       <Card>
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-900">Create your account</h1>
