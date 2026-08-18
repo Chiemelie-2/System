@@ -7,14 +7,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  // DIRECT_URL is required when using a connection pooler (e.g. Supabase, Neon).
-  // If you are connecting directly (local Postgres), you can leave DIRECT_URL
-  // unset — Prisma will fall back to DATABASE_URL for migrations too.
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
 }
-
 // ============================================
 // ENUMS
 // ============================================
