@@ -659,9 +659,9 @@ export default function HomePage() {
             <footer className="flex flex-col items-center gap-2">
               <div className="h-px w-12 bg-gold-400/40"/>
               <cite className="not-italic text-sm font-semibold text-gold-400 tracking-wide">
-                Adaeze Obi
+                John Doe
               </cite>
-              <span className="text-xs text-white/40">Private Account Holder, Lagos</span>
+              <span className="text-xs text-white/40">Private Account Holder, New York</span>
             </footer>
           </blockquote>
         </div>
