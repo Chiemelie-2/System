@@ -1,18 +1,29 @@
 // app/(customer)/layout.tsx
-import { auth, signOut } from '@/lib/auth'
+// ── Drop-in replacement ──
+//
+// FIX: Removed `await signOut()` from the layout body.
+// signOut() writes a cookie to clear the session. Cookie writes are only
+// permitted inside Server Actions and Route Handlers — calling signOut()
+// directly in a Server Component (layout) throws:
+//   "Cookies can only be modified in a Server Action or Route Handler"
+//
+// The fix: redirect suspended/deactivated users to a dedicated route
+// /api/auth/force-signout?code=... which is a Route Handler and is
+// therefore allowed to call signOut().
+
+import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
-import { Sidebar } from '@/components/layout/Sidebar'
-import { Header } from '@/components/layout/Header'
-import { MobileNav } from '@/components/layout/MobileNav'
+import { CustomerSidebar } from '@/components/layout/CustomerSidebar'
+import { CustomerHeader } from '@/components/layout/CustomerHeader'
 import { MobileMenuProvider } from '@/components/layout/MobileMenuContext'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: {
     default: 'Dashboard',
-    template: '%s | BankingSim'
-  }
+    template: '%s | Fiduciary',
+  },
 }
 
 export default async function CustomerLayout({
@@ -21,26 +32,28 @@ export default async function CustomerLayout({
   children: React.ReactNode
 }) {
   const session = await auth()
-  
+
   if (!session?.user) {
     redirect('/login')
   }
 
-  // Re-check live account status on every request. JWT sessions don't
-  // automatically expire when an admin suspends an account mid-session,
-  // so without this check a suspended user would stay logged in and
-  // able to use the app until their token naturally expires.
+  // Live account-status check — JWT tokens don't auto-expire on suspension.
+  // We check the DB on every layout render to catch suspensions between requests.
   const liveUser = await prisma.user.findUnique({
     where: { id: session.user.id },
     select: { status: true },
   })
 
   if (!liveUser || liveUser.status !== 'ACTIVE') {
-    const code = liveUser?.status === 'SUSPENDED' ? 'AccountSuspended' : 'AccountDeactivated'
-    await signOut({ redirectTo: `/login?error=CredentialsSignin&code=${code}` })
+    // Cannot call signOut() here (Server Component, not a Server Action).
+    // Redirect to the Route Handler which is allowed to write the session cookie.
+    const code =
+      liveUser?.status === 'SUSPENDED'
+        ? 'AccountSuspended'
+        : 'AccountDeactivated'
+    redirect(`/api/auth/force-signout?code=${code}`)
   }
 
-  // Fetch user profile for sidebar
   const profile = await prisma.customerProfile.findUnique({
     where: { userId: session.user.id },
     select: {
@@ -48,47 +61,37 @@ export default async function CustomerLayout({
       lastName: true,
       profilePhoto: true,
       verificationStatus: true,
-    }
+    },
   })
 
   const account = await prisma.bankAccount.findFirst({
     where: { userId: session.user.id },
-    select: {
-      accountNumber: true,
-      balance: true,
-    }
+    select: { accountNumber: true, balance: true },
   })
 
-  // Client Components can only receive plain, serializable props. Prisma's
-  // `balance` field is a Decimal class instance, not a plain number, so it
-  // must be converted before crossing the server -> client boundary.
   const serializedAccount = account
-    ? { accountNumber: account.accountNumber, balance: account.balance.toNumber() }
+    ? {
+        accountNumber: account.accountNumber,
+        balance: account.balance.toNumber(),
+      }
     : null
 
   return (
     <MobileMenuProvider>
-      <div className="min-h-screen bg-gray-50">
-        {/* Desktop Sidebar + Mobile Drawer */}
-        <Sidebar
+      <div className="min-h-screen bg-[#f4f6fb]">
+        <CustomerSidebar
           userProfile={profile}
           accountNumber={serializedAccount?.accountNumber ?? null}
         />
-
-        {/* Main Content */}
-        <div className="lg:pl-64">
-          <Header
+        <div className="lg:pl-64 flex flex-col min-h-screen">
+          <CustomerHeader
             userProfile={profile}
             account={serializedAccount}
           />
-
-          <main className="py-6 px-4 sm:px-6 lg:px-8">
+          <main className="flex-1 py-6 px-4 sm:px-6 lg:px-8">
             {children}
           </main>
         </div>
-
-        {/* Mobile Navigation */}
-        <MobileNav />
       </div>
     </MobileMenuProvider>
   )

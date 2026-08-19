@@ -1,10 +1,35 @@
 // app/layout.tsx
+// ── Drop-in replacement ──
+//
+// FIX: Removed the explicit <head> block. In the Next.js App Router, <head>
+// is managed automatically. Placing font <link> tags inside an explicit <head>
+// creates a second HTML tree that conflicts with the GlobalError component
+// (which also renders <html><body>), causing the hydration error:
+//   "You are mounting a new html component when a previous one has not unmounted"
+//
+// Google Fonts are now loaded via next/font/google — the correct approach for
+// the App Router — which injects them at build time with zero layout shift.
+
 import type { Metadata } from 'next'
+import { Inter, Playfair_Display } from 'next/font/google'
 import { Toaster } from 'sonner'
 import { SkipLink } from '@/components/ui/SkipLink'
 import { SessionProviderWrapper } from '@/components/providers/SessionProviderWrapper'
 import { auth } from '@/lib/auth'
 import './globals.css'
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  weight: ['600', '700', '800'],
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: {
@@ -27,19 +52,12 @@ export default async function RootLayout({
   const session = await auth()
 
   return (
-    <html lang="en" data-scroll-behavior="smooth">
-      {/*
-        Load Inter + Playfair Display from Google Fonts.
-        Place the <link> tags in <head> for SSR performance.
-      */}
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${inter.variable} ${playfair.variable}`}
+    >
+      {/* No explicit <head> here — Next.js App Router handles it automatically */}
       <body className="min-h-screen bg-gray-50 font-sans antialiased">
         <SessionProviderWrapper session={session}>
           <SkipLink />

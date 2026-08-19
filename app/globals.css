@@ -1,4 +1,10 @@
 /* app/globals.css */
+/* ── Drop-in replacement ── */
+/*
+  FIX: Removed @import for Google Fonts — fonts are now loaded via next/font
+  in layout.tsx which injects --font-inter and --font-playfair CSS variables.
+  The fontFamily values below reference those variables.
+*/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,26 +12,26 @@
 @layer base {
   :root {
     /* Fiduciary color tokens */
-    --background:        0 0% 100%;
-    --foreground:        230 60% 8%;
-    --card:              0 0% 100%;
-    --card-foreground:   230 60% 8%;
-    --popover:           0 0% 100%;
-    --popover-foreground:230 60% 8%;
-    --primary:           236 64% 27%;   /* #1a1f6e navy */
-    --primary-foreground:0 0% 100%;
-    --secondary:         240 20% 96%;
-    --secondary-foreground:236 64% 27%;
-    --muted:             240 15% 95%;
-    --muted-foreground:  220 10% 46%;
-    --accent:            38 56% 50%;    /* #c9963a gold */
-    --accent-foreground: 0 0% 100%;
-    --destructive:       0 84% 60%;
+    --background:         0 0% 100%;
+    --foreground:         230 60% 8%;
+    --card:               0 0% 100%;
+    --card-foreground:    230 60% 8%;
+    --popover:            0 0% 100%;
+    --popover-foreground: 230 60% 8%;
+    --primary:            236 64% 27%;   /* #1a1f6e navy */
+    --primary-foreground: 0 0% 100%;
+    --secondary:          240 20% 96%;
+    --secondary-foreground: 236 64% 27%;
+    --muted:              240 15% 95%;
+    --muted-foreground:   220 10% 46%;
+    --accent:             38 56% 50%;    /* #c9963a gold */
+    --accent-foreground:  0 0% 100%;
+    --destructive:        0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border:            220 20% 90%;
-    --input:             220 20% 90%;
-    --ring:              236 64% 50%;
-    --radius:            0.625rem;
+    --border:             220 20% 90%;
+    --input:              220 20% 90%;
+    --ring:               236 64% 50%;
+    --radius:             0.625rem;
   }
 
   * {
@@ -35,10 +41,6 @@
   body {
     @apply bg-gray-50 text-gray-900 antialiased;
   }
-
-  /* Smooth scroll — applied via data-scroll-behavior on <html> in layout.tsx
-     so Next.js route transitions are not affected.
-     See: https://nextjs.org/docs/messages/missing-data-scroll-behavior */
 }
 
 @layer components {

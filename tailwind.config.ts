@@ -1,11 +1,17 @@
 // tailwind.config.ts
+// ── Drop-in replacement ──
+//
+// FIX: fontFamily now reads from CSS variables injected by next/font/google
+// in layout.tsx (--font-inter, --font-playfair) instead of bare font names.
+// This is the correct pattern for next/font + Tailwind integration.
+
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
   content: [
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -24,7 +30,6 @@ const config: Config = {
           900: '#13164f',   // darkest navy
           950: '#0c0e36',
         },
-        // Gold accent for premium feel
         gold: {
           50:  '#fffbeb',
           100: '#fef3c7',
@@ -54,8 +59,9 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans:    ['Inter', 'system-ui', 'sans-serif'],
-        display: ['"Playfair Display"', 'Georgia', 'serif'],
+        // Reference next/font CSS variables injected on <html> in layout.tsx
+        sans:    ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-playfair)', 'Georgia', 'serif'],
         mono:    ['JetBrains Mono', 'monospace'],
       },
       spacing: {
@@ -68,11 +74,11 @@ const config: Config = {
           'linear-gradient(90deg, #c9963a 0%, #fbbf24 50%, #c9963a 100%)',
       },
       animation: {
-        'fade-in':     'fadeIn 0.4s ease-in-out',
-        'slide-up':    'slideUp 0.5s ease-out',
-        'slide-down':  'slideDown 0.3s ease-out',
-        'scale-in':    'scaleIn 0.2s ease-out',
-        'shimmer':     'shimmer 2.5s linear infinite',
+        'fade-in':    'fadeIn 0.4s ease-in-out',
+        'slide-up':   'slideUp 0.5s ease-out',
+        'slide-down': 'slideDown 0.3s ease-out',
+        'scale-in':   'scaleIn 0.2s ease-out',
+        'shimmer':    'shimmer 2.5s linear infinite',
       },
       keyframes: {
         fadeIn: {
