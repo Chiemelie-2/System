@@ -149,14 +149,11 @@ export default async function TransactionsPage({
         {transactions.length > 0 ? (
           <>
             <div className="divide-y divide-gray-50">
-              {transactions.map((tx) => {
-                const meta = txMeta(tx.transactionType)
-                const amount =
-                  typeof tx.amount === 'object' && typeof tx.amount.toNumber === 'function'
-                    ? tx.amount.toNumber()
-                    : parseFloat(tx.amount)
+                  {transactions.map((tx) => {
+                  const meta = txMeta(tx.transactionType)
+                  const amount = tx.amount.toNumber()
 
-                return (
+                  return (
                   <div
                     key={tx.id}
                     className="flex items-center gap-4 px-5 py-4 hover:bg-gray-50/60 transition-colors"
