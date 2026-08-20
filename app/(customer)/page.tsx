@@ -58,7 +58,9 @@ export default async function DashboardPage() {
       </div>
       
       {/* Quick Actions */}
-      <QuickActions />
+      <QuickActions
+        transfersEnabled={account?.transfersEnabled ?? false}
+      />
       
       {/* Recent Transactions */}
       {account?.transactions && (
